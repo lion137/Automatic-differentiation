@@ -56,5 +56,33 @@ class Dual_number:
         return Dual_number((1 / self.real) * other, ((-1 * self.dual) / self.real * self.real) * other )
     
 def dual_number(x):
+    """converse tu dual number x + 0e"""
     return Dual_number(x)
+# few functions, call math with real argument:
+def sin(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(math.sin(x.real), x.dual * math.cos(x.real))
+    else:
+        return math.sin(x)
+def cos(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(math.cos(x.real), -x.dual * math.sin(x.real))
+    return math.sin(x)
+
+def tan(x):
+    if isinstance(x, Dual_number):
+        return sin(x) / cos(x)
+    else:
+        return math.tan(x)
+        
+def sqrt(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(math.sqrt(x.real), (x.dual) / (2 * sqrt(x.real)))
+    else:
+        return math.sqrt(x)
+def cube_root(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(x.real ** (1/3), (x.dual) / (3 * (x.real ** 2)**(1 / 3)))
+    else:
+        return x ** (1 / 3)
         
