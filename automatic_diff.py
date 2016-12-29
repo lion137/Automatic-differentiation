@@ -64,16 +64,50 @@ def sin(x):
         return Dual_number(math.sin(x.real), x.dual * math.cos(x.real))
     else:
         return math.sin(x)
+    
 def cos(x):
     if isinstance(x, Dual_number):
         return Dual_number(math.cos(x.real), -x.dual * math.sin(x.real))
-    return math.sin(x)
+    else:
+        return math.sin(x)
 
 def tan(x):
+    """tangent x for |x|  < pi / 2 """
     if isinstance(x, Dual_number):
         return sin(x) / cos(x)
     else:
         return math.tan(x)
+    
+def cot(x):
+    if isinstance(x, Dual_number):
+        return cos(x) / sin(x)
+    else:
+        return math.cos(x) / math.sin(x)
+
+def sinh(x):
+    if isinstance(x, Dual_number):
+        return  Dual_number(math.sinh(x.real), x.dual * math.cosh(x.real))
+    else:
+        return math.sinh(x)
+
+def cosh(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(math.cosh(x.real), -x.dual * math.sinh(x.real))
+    else:
+        return math.cosh(x)
+
+def tanh(x):
+    if isinstance(x, Dual_number):
+        return sinh(x) / cosh(x)
+    else:
+        return math.tanh(x)
+
+def coth(x):
+    """coth if x or x.real not eq to 0"""
+    if isinstance(x, Dual_number):
+        return cosh(x) / sinh(x)
+    else:
+        return math.cosh(x) / math.sinh(x)
         
 def sqrt(x):
     if isinstance(x, Dual_number):
@@ -85,4 +119,29 @@ def cube_root(x):
         return Dual_number(x.real ** (1/3), (x.dual) / (3 * (x.real ** 2)**(1 / 3)))
     else:
         return x ** (1 / 3)
+
+def exp(x):
+    if isinstance(x, Dual_number):
+        return Dual_number(math.exp(x.real), math.exp(x.real) * x.dual)
+    else:
+        return math.exp(x)
+    
+def ln(x):
+    if isinstance(x, Dual_number):
+        if not x.dual is 0:
+            return Dual_number(math.log(x.real) ,  (x.real / x.dual))
+        else:
+            return Dual_number(math.log(x.real))
+    else:
+        return math.log(x)
+
+
+def pow(a, x):
+    if isinstance(x, Dual_number):
+        if not x.dual is 0:
+            return Dual_number(math.pow(a, x.real), math.pow(a, x.real) * x.dual * ln(x.dual))
+        else:
+            return Dual_number(math.pow(a, x.real))
+    else:
+        return math.pow(a, x)
         
